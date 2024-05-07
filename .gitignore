@@ -6,6 +6,8 @@
 /out-tsc
 /bazel-out
 
+/swagger-codegen-cli.jar
+
 # Node
 /node_modules
 npm-debug.log
