@@ -1,0 +1,52 @@
+/* You can add global styles to this file, and also import other style files */
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+
+.form-label {
+  font-size: 14px;
+  margin: 0 0 4px;
+  color: rgba(13, 19, 33, 0.6);
+}
+
+.p-inputtext {
+  padding: 6px;
+  outline: none;
+}
+
+textarea:focus,
+textarea.form-control:focus,
+input.form-control:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+[type="text"].form-control:focus,
+[type="password"].form-control:focus,
+[type="email"].form-control:focus,
+[type="tel"].form-control:focus,
+[contenteditable].form-control:focus {
+  box-shadow: inset 0 0px 0 #ddd;
+}
+
+td .form-control {
+  font-size: 12px !important;
+}
+
+.p-input-icon-left .p-inputtext {
+  padding: 8px 35px;
+}
+
+.p-paginator-rpp-options .p-inputtext {
+  padding: 11px;
+}
+
+table {
+  white-space: nowrap;
+}
+
+.p-button {
+  font-size: 14px !important;
+  font-weight: 100;
+  padding: 8px 18px !important;
+}

@@ -1,0 +1,206 @@
+<header class="d-block fw-500">
+  <p class="display-5 fs-2 m-2 p-1 text-center">Supervisory Report</p>
+</header>
+
+<section class="ms-2 p-3 pt-1">
+  <form #searchReportsForm="ngForm" (submit)="searchReports()" ngNativeValidate>
+    <div class="row">
+      <div class="col-sm-4 col-md-3 col-lg-3">
+        <label for="FromDate" class="form-label">From</label>
+        <p-calendar
+          #FromDate
+          [(ngModel)]="dateRanges.FromDate"
+          name="FromDate"
+          [iconDisplay]="'input'"
+          [showIcon]="true"
+          class="d-flex"
+          inputId="icondisplay"
+          [dateFormat]="dateFormat"
+          showButtonBar
+          (ngModelChange)="convertToString(1)"
+          [minDate]="minDate"
+          [maxDate]="maxDate"
+          required
+        ></p-calendar>
+      </div>
+      <div class="col-sm-4 col-md-3 col-lg-3">
+        <label for="ToDate" class="form-label">To</label>
+        <p-calendar
+          #ToDate
+          [(ngModel)]="dateRanges.ToDate"
+          name="ToDate"
+          [iconDisplay]="'input'"
+          [showIcon]="true"
+          class="d-flex"
+          inputId="icondisplay"
+          [dateFormat]="dateFormat"
+          showButtonBar
+          [minDate]="minDate"
+          [maxDate]="maxDate"
+          (ngModelChange)="convertToString(2)"
+          required
+        ></p-calendar>
+      </div>
+      <div class="col-sm-4 col-md-3 col-lg-3">
+        <label for="ATMID" class="form-label">ATM ID</label>
+        <input
+          #ATMID
+          [(ngModel)]="searchForm.AtmId"
+          name="ATMID"
+          type="text"
+          class="form-control"
+          required
+        />
+      </div>
+      <div class="col-sm-4 col-md-3 col-lg-3">
+        <div class="container d-flex flex-column align-items-center p-4">
+          <button
+            type="submit"
+            class="w-75 btn btn-primary rounded-pill"
+            [disabled]="searchReportsForm.invalid"
+          >
+            Search
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</section>
+
+<section *ngIf="revision_reports.length || supervisor_reports.length">
+  <div class="d-flex container p-0 m-0">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <button
+          class="nav-link cursor {{ active_index == 1 ? 'active' : '' }}"
+          (click)="switchTable(1)"
+        >
+          Supervisor Report
+        </button>
+      </li>
+      <li class="nav-item">
+        <button
+          class="nav-link  {{ active_index == 2 ? 'active' : '' }}"
+          (click)="switchTable(2)"
+        >
+          Revision Report
+        </button>
+      </li>
+    </ul>
+  </div>
+  <p-table
+    #dt
+    [exportFilename]="download_file_name"
+    [value]="active_index == 1 ? supervisor_reports : revision_reports"
+    [rows]="5"
+    [columns]="cols"
+    [exportHeader]="exportHeader"
+    [rowsPerPageOptions]="[5, 10, 25]"
+    [paginator]="true"
+    [tableStyle]="{
+      'white-space': 'nowrap',
+      'font-family': 'Arial, sans-serif',
+      'font-size': '14px',
+      'border-collapse': 'collapse',
+      overflow: 'hidden',
+      'text-overflow': 'ellipsis'
+    }"
+    styleClass="p-datatable-sm"
+    [globalFilterFields]="['billId', 'details']"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [rowHover]="true"
+    dataKey="id"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [showCurrentPageReport]="true"
+  >
+    <ng-template pTemplate="caption">
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="container">
+          <span class="m-0"
+            >ATM ID:
+            {{ supervisor_reports.length ? supervisor_reports[0].ATMID : "" }}
+          </span>
+          <span class="ms-3"
+            >Bank:
+            {{
+              supervisor_reports.length ? supervisor_reports[0].Bank : ""
+            }}</span
+          >
+          <span class="ms-3"
+            >Call Required: {{ this.callRequired ? "Yes" : "No" }}</span
+          >
+        </div>
+        <div class="row container d-flex justify-content-end">
+          <div class="col">
+            <span class="p-input-icon-left m-1">
+              <i class="pi pi-search"></i>
+              <input
+                #searchInput
+                pInputText
+                type="text"
+                (input)="dt.filterGlobal(searchInput.value, 'contains')"
+                placeholder="Search..."
+              />
+            </span>
+          </div>
+          <div class="col">
+            <button
+              pButton
+              icon="pi pi-download"
+              (click)="dt.exportCSV()"
+              class="m-1 float-end p-element p-button p-component ng-star-inserted"
+              label="Download Reports"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr *ngIf="active_index == 1">
+        <th>Date</th>
+        <th>Duration</th>
+        <th>Supervisor Entry / Exit Count</th>
+        <th>Supervisor Activities</th>
+        <th>Event</th>
+        <th>Safe Door Open Close</th>
+        <th>Safe Door Event</th>
+        <th>Safe Door Duration</th>
+      </tr>
+      <tr *ngIf="active_index == 2">
+        <th>Date</th>
+        <th>Total Cash Jam</th>
+        <th>Total Error</th>
+        <th>Deposit</th>
+        <th>Withdrawal</th>
+        <th>Error Codes</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-report>
+      <tr *ngIf="active_index == 1">
+        <td>
+          {{ report.Date | date }}
+        </td>
+        <td>{{ report.Duration || "NA" }}</td>
+        <td>
+          {{ report.Supervisor_Entry_Exit_Count || "NA" }}
+        </td>
+        <td>
+          {{ report.Supervisor_Activities || "NA" }}
+        </td>
+        <td>{{ report.Event || "NA" }}</td>
+        <td>{{ report.Safe_Door_Open_Close || "NA" }}</td>
+        <td>{{ report.Safe_Door_Event || "NA" }}</td>
+        <td>{{ report.Safe_Door_Duration || "NA" }}</td>
+      </tr>
+      <tr *ngIf="active_index == 2">
+        <td>{{ report.Atm_Date | date }}</td>
+        <td>{{ report.Total_Cash_Jam || "NA" }}</td>
+        <td>{{ report.Total_Error || "NA" }}</td>
+        <td>{{ report.Deposit || "NA" }}</td>
+        <td>{{ report.Withdrawal || "NA" }}</td>
+        <td>{{ report.Error_Codes || "NA" }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</section>
+<app-loader *ngIf="showLoader"></app-loader>

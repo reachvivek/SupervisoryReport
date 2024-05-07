@@ -1,0 +1,77 @@
+openapi: 3.0.3
+info:
+  title: Supervisory Report - OpenAPI 3.0
+  description: APIs For Supervisory Report
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: vivek.singh-v@cms.com
+  version: 1.0.11
+  
+servers:
+  - url: http://10.0.1.11:5001
+tags:
+  - name: rev_repo
+    description: Fetch all revision reports
+  - name: sup_repo
+    description: Fetch all supervisor reports
+paths:
+  /sup_repo:
+    post:
+      tags:
+        - sup_repo
+      summary: Fetch all supervisor reports
+      description: Fetch all supervisor reports
+      operationId: fetchSupervisorReports
+      requestBody:
+        description: Date range and ATM ID
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Report'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          
+  /rev_repo:
+    post:
+      tags:
+        - rev_repo
+      summary: Fetch all revision reports
+      description: Fetch all revision reports
+      operationId: fetchRevisionReports
+      requestBody:
+        description: Date range and ATM ID
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Report'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+  
+components:
+  schemas:
+    Report:
+      type: object
+      properties:
+        FromDate:
+          type: string
+          example: 01-01-2024
+        ToDate:
+          type: string
+          example: 01-01-2024
+        AtmId:
+          type: string
+          example: 1151BY01
+
+  requestBodies:
+    Report:
+      description: Pet object that needs to be added to the store
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Report'
+    
+  
