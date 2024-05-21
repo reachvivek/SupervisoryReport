@@ -38,65 +38,9 @@ export class LayoutComponent {
   minDate: Date | undefined;
   maxDate: Date | undefined;
 
-  supervisor_reports = [
-    {
-      AtmId: '0104BYA1',
-      Date: '2024-04-25',
-      Duration: '0:11:23',
-      Supervisor_Entry_Exit_Count: 1,
-      Supervisor_Activities: 2,
-      Event:
-        '[2024/04/25 12:09:35]ENTERED SUPERVISOR PROGRAM, [2024/04/25 12:20:58]EXITED SUPERVISOR',
-      Safe_Door_Open_Close: 1,
-      Safe_Door_Event:
-        '[2024/04/25 12:10:15]SAFE DOOR OPENED, [2024/04/25 12:19:41]SAFE DOOR CLOSED',
-      Safe_Door_Duration: '0:9:26',
-      App_version: '03.01.00.09_CB_2.7.1S',
-      Bank: 'CANARA',
-    },
-    {
-      ATMID: '0104BYA1',
-      Date: '2024-04-26',
-      Duration: '0:22:57',
-      Supervisor_Entry_Exit_Count: 3,
-      Supervisor_Activities: 6,
-      Event:
-        '[2024/04/25 10:18:38]ENTERED SUPERVISOR PROGRAM, [2024/04/25 10:30:18]EXITED SUPERVISOR, [2024/04/25 10:30:23]ENTERED SUPERVISOR PROGRAM, [2024/04/25 10:31:48]EXITED SUPERVISOR, [2024/04/25 17:08:36]ENTERED SUPERVISOR PROGRAM, [2024/04/25 17:18:28]EXITED SUPERVISOR',
-      Safe_Door_Open_Close: 3,
-      Safe_Door_Event:
-        '[2024/04/25 10:18:35]SAFE DOOR OPENED, [2024/04/25 10:28:47]SAFE DOOR CLOSED, [2024/04/25 10:30:21]SAFE DOOR OPENED, [2024/04/25 10:30:29]SAFE DOOR CLOSED, [2024/04/25 17:09:57]SAFE DOOR OPENED, [2024/04/25 17:17:05]SAFE DOOR CLOSED',
-      Safe_Door_Duration: '0:17:28',
-      App_version: '03.01.00.09_CB_2.7.1S',
-      Bank: 'CANARA',
-    },
-  ];
+  supervisor_reports: any = [];
 
-  revision_reports = [
-    {
-      Date: '2024-04-26',
-      Total_Cash_Jam: 0,
-      Total_Error: 4,
-      Deposit: 150,
-      Withdrawal: 0,
-      Error_Codes: ['5D0LA00', '5D7C800', '5D7C200'],
-    },
-    {
-      Date: '2024-04-02',
-      Total_Cash_Jam: 0,
-      Total_Error: 61,
-      Deposit: 56,
-      Withdrawal: 0,
-      Error_Codes: ['5D7C200'],
-    },
-    {
-      Date: '2024-04-03',
-      Total_Cash_Jam: 0,
-      Total_Error: 56,
-      Deposit: 46,
-      Withdrawal: 0,
-      Error_Codes: ['593G500'],
-    },
-  ];
+  revision_reports: any = [];
 
   cols!: Column[];
 
@@ -172,7 +116,6 @@ export class LayoutComponent {
       );
       if (res2.Data && res2.Data.length) {
         this.supervisor_reports = [...res2.Data];
-        console.log(res2);
       }
     } catch (err: any) {
       console.log(err);
@@ -186,7 +129,6 @@ export class LayoutComponent {
       if (res1.Data && res1.Data.length) {
         this.revision_reports = [...res1.Data];
         this.callRequired = res1.CallReq;
-        console.log(res1);
       }
       this.showLoader = false;
     } catch (err: any) {

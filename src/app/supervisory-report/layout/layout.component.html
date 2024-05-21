@@ -116,17 +116,13 @@
     <ng-template pTemplate="caption">
       <div class="d-flex align-items-center justify-content-between">
         <div class="container">
-          <span class="m-0"
-            >ATM ID:
-            {{ supervisor_reports.length ? supervisor_reports[0].ATMID : "" }}
-          </span>
           <span class="ms-3"
             >Bank:
             {{
               supervisor_reports.length ? supervisor_reports[0].Bank : ""
             }}</span
           >
-          <span class="ms-3"
+          <span class="ms-3" *ngIf="active_index == 2"
             >Call Required: {{ this.callRequired ? "Yes" : "No" }}</span
           >
         </div>
