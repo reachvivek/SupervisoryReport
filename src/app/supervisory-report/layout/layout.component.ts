@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RevRepoService, SupRepoService } from '../../../swagger';
+import { ReportToFetchDto, ReportsService } from '../../../swagger';
 import { firstValueFrom } from 'rxjs';
 
 interface Column {
@@ -15,14 +15,10 @@ interface Column {
 })
 export class LayoutComponent {
   showLoader: boolean = false;
-  searchForm: {
-    FromDate: string | undefined;
-    ToDate: string | undefined;
-    AtmId: string | undefined;
-  } = {
-    FromDate: undefined,
-    ToDate: undefined,
-    AtmId: undefined,
+  searchForm: ReportToFetchDto = {
+    fromDate: undefined,
+    toDate: undefined,
+    atmId: undefined,
   };
 
   dateRanges: {
@@ -78,10 +74,7 @@ export class LayoutComponent {
 
   active_index: number = 1;
 
-  constructor(
-    private revRepoService: RevRepoService,
-    private supRepoService: SupRepoService
-  ) {}
+  constructor(private reportService: ReportsService) {}
 
   ngOnInit(): void {
     this.maxDate = new Date();
@@ -101,9 +94,9 @@ export class LayoutComponent {
       .split('T')[0];
 
     if (ind === 1) {
-      this.searchForm.FromDate = updatedDate;
+      this.searchForm.fromDate = updatedDate;
     } else if (ind === 2) {
-      this.searchForm.ToDate = updatedDate;
+      this.searchForm.toDate = updatedDate;
     }
   }
 
@@ -112,7 +105,7 @@ export class LayoutComponent {
     this.showLoader = true;
     try {
       const res2 = await firstValueFrom(
-        this.supRepoService.fetchSupervisorReports(this.searchForm)
+        this.reportService.reportsGetSupervisoryReportPost(this.searchForm)
       );
       if (res2.Data && res2.Data.length) {
         this.supervisor_reports = [...res2.Data];
@@ -124,7 +117,7 @@ export class LayoutComponent {
     this.showLoader = true;
     try {
       const res1 = await firstValueFrom(
-        this.revRepoService.fetchRevisionReports(this.searchForm)
+        this.reportService.reportsGetRevisionReportPost(this.searchForm)
       );
       if (res1.Data && res1.Data.length) {
         this.revision_reports = [...res1.Data];

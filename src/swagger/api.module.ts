@@ -3,16 +3,14 @@ import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
 
-import { RevRepoService } from './api/revRepo.service';
-import { SupRepoService } from './api/supRepo.service';
+import { ReportsService } from './api/reports.service';
 
 @NgModule({
   imports:      [],
   declarations: [],
   exports:      [],
   providers: [
-    RevRepoService,
-    SupRepoService ]
+    ReportsService ]
 })
 export class ApiModule {
     public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders<ApiModule> {
